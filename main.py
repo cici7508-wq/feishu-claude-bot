@@ -108,12 +108,8 @@ async def feishu_webhook(request: Request):
     payload = json.loads(body_bytes)
 
     # ── 2. URL 验证（飞书首次配置时的握手） ────────────────
-    if payload.get("type") == "url_verification":
-        challenge = payload.get("challenge", "")
-        token     = payload.get("token", "")
-        if token != FEISHU_VERIFY_TOKEN:
-            return JSONResponse({"error": "invalid token"}, status_code=403)
-        return JSONResponse({"challenge": challenge})
+if payload.get("type") == "url_verification":
+    return JSONResponse({"challenge": payload.get("challenge", "")})
 
     # ── 3. 处理消息事件 ───────────────────────────────────
     header = payload.get("header", {})
